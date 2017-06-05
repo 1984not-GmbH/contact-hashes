@@ -29,7 +29,9 @@
  *
  * NOTE: Both email an hash need to be in a normalised form,
  * otherwise matching with a database of users won't work.
+ *
+ * For phone numbers E164 (https://en.wikipedia.org/wiki/E.164) can be used for example.
  */
-unsigned char *hash_contact(unsigned char *contact, size_t length);
+char *hash_contact(const char * const contact, const size_t length);
 
 #endif /* CONTACT_HASHES_H */

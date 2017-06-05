@@ -21,17 +21,41 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
+#include <assert.h>
 #include "contact-hashes.h"
 
-int main(void) {
-	unsigned char *hash = hash_contact(NULL, 0);
+static bool compare_hash(const char * const expected, const char * const contact) {
+	char *hash = hash_contact(contact, strlen(contact));
 	if (hash == NULL) {
+		return false;
+	}
+	printf("contact: %s, hash: %s\n", contact, hash);
+
+	int comparison = strcmp(expected, hash);
+	free(hash);
+
+	return (comparison == 0);
+}
+
+int main(void) {
+	if (!compare_hash("argon2i13-3-10485760-8744a5b8c8530ec271356f36e346953ab7a212a0a8a009c4d88a04baafa0fb2f", "fsmaxb@1984not.de")) {
+		return EXIT_FAILURE;
+	}
+	if (!compare_hash("argon2i13-3-10485760-ca6de2c0dbe5f4c1e89c5a36714bc6284566bf5e6e5ef1c255ded18aa1522c5e", "+19995550123")) {
 		return EXIT_FAILURE;
 	}
 
-	printf("%.*s\n", 0, (char*)hash);
-
-	free(hash);
+	// test a scenario with 200 contacts with email address and phone number
+	for (size_t i = 0; i < 400; i++) {
+		char contact[] = "test-contact";
+		char *hash = hash_contact(contact, sizeof(contact));
+		if (hash == NULL) {
+			return EXIT_FAILURE;
+		}
+		free(hash);
+	}
 
 	return EXIT_SUCCESS;
 }

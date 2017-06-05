@@ -22,16 +22,48 @@
 #include <sodium.h>
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 
 #include "contact-hashes.h"
 
-unsigned char *hash_contact(unsigned char *contact __attribute__((unused)), size_t length __attribute__((unused))) {
-	unsigned char *hash = malloc(sizeof("Hello!"));
-	if (hash == NULL) {
+char *hash_contact(const char * const contact, const size_t contact_length) {
+	const int algorithm = 1; // crypto_pwhash_argon2i_ALG_ARGON2I13
+	const size_t opslimit = 3U; // crypto_pwhash_argon2i_OPSLIMIT_MIN
+	const size_t memlimit = 10485760U; // 10 MiB
+	const size_t hash_bytes = 32U;
+	const unsigned char salt[] = "1984not contact";
+
+	assert(sizeof(salt) == crypto_pwhash_argon2i_SALTBYTES);
+
+	unsigned char hash[hash_bytes];
+
+	/* calculate the hash */
+	int status = crypto_pwhash(
+			hash,
+			sizeof(hash),
+			contact,
+			contact_length,
+			salt,
+			opslimit,
+			memlimit,
+			algorithm);
+	if (status != 0) {
 		return NULL;
 	}
 
-	strncpy((char*)hash, "Hello!", sizeof("Hello!"));
+	/* encode as HEX */
+	char hex_hash[2 * hash_bytes + 1];
+	if (sodium_bin2hex(hex_hash, sizeof(hex_hash), hash, sizeof(hash)) == NULL) {
+		return NULL;
+	}
 
-	return hash;
+	/* encode it into a general format */
+	const size_t max_encoded_size = sizeof("argon2i13-18446744073709551615-18446744073709551615-000102030405060708090A0B0C0D0E0F101112131415161718191A1B1C1D1E1F");
+	char *encoded_hash = malloc(max_encoded_size);
+	if (encoded_hash == NULL) {
+		return NULL;
+	}
+	snprintf(encoded_hash, max_encoded_size, "argon2i13-%zu-%zu-%s", opslimit, memlimit, hex_hash);
+
+	return encoded_hash;
 }
