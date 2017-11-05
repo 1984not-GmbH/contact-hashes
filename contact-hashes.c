@@ -3,7 +3,7 @@
  *
  * ISC License
  *
- * Copyright (C) 2015-2016 1984not Security GmbH
+ * Copyright (C) 2017 1984not Security GmbH
  * Author: Max Bruckner (FSMaxB)
  *
  * Permission to use, copy, modify, and/or distribute this software for any
@@ -29,7 +29,7 @@
 char *hash_contact(const char * const contact, const size_t contact_length) {
 	const int algorithm = 1; // crypto_pwhash_argon2i_ALG_ARGON2I13
 	const size_t opslimit = 3U; // crypto_pwhash_argon2i_OPSLIMIT_MIN
-	const size_t memlimit = 10485760U; // 10 MiB
+	const size_t memlimit = 1U * 1024U * 1024U; // 1 MiB
 	const size_t hash_bytes = 32U;
 	const unsigned char salt[] = "1984not contact";
 

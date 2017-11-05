@@ -3,7 +3,7 @@
  *
  * ISC License
  *
- * Copyright (C) 2015-2016 1984not Security GmbH
+ * Copyright (C) 2017 1984not Security GmbH
  * Author: Max Bruckner (FSMaxB)
  *
  * Permission to use, copy, modify, and/or distribute this software for any
@@ -40,13 +40,6 @@ static bool compare_hash(const char * const expected, const char * const contact
 }
 
 int main(void) {
-	if (!compare_hash("argon2i13-3-10485760-8744a5b8c8530ec271356f36e346953ab7a212a0a8a009c4d88a04baafa0fb2f", "fsmaxb@1984not.de")) {
-		return EXIT_FAILURE;
-	}
-	if (!compare_hash("argon2i13-3-10485760-ca6de2c0dbe5f4c1e89c5a36714bc6284566bf5e6e5ef1c255ded18aa1522c5e", "+19995550123")) {
-		return EXIT_FAILURE;
-	}
-
 	// test a scenario with 200 contacts with email address and phone number
 	for (size_t i = 0; i < 400; i++) {
 		char contact[] = "test-contact";
@@ -56,6 +49,14 @@ int main(void) {
 		}
 		free(hash);
 	}
+
+	if (!compare_hash("argon2i13-3-1048576-27b0714c1fcb395efd9742f7800e90797fc916b44370d42e21f9523f8d96e647", "fsmaxb@1984not.de")) {
+		return EXIT_FAILURE;
+	}
+	if (!compare_hash("argon2i13-3-1048576-61e6107159dee562f112fafee077d38f21bcf2a63084ff967a91d2e08eef1193", "+19995550123")) {
+		return EXIT_FAILURE;
+	}
+
 
 	return EXIT_SUCCESS;
 }
