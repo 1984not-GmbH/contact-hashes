@@ -96,6 +96,9 @@ target_link_libraries(contact-hashes sodium)
 add_executable(contact-hash-test test.c)
 target_link_libraries(contact-hash-test contact-hashes)
 
+add_executable(chash chash.c)
+target_link_libraries(chash contact-hashes)
+
 option(ENABLE_VALGRIND "Enable valgrind test" OFF)
 add_test(contact-hash-test "./contact-hash-test")
 if((NOT APPLE) AND (NOT ("${MEMORYCHECK_COMMAND}" MATCHES "MEMORYCHECK_COMMAND-NOTFOUND")) AND ENABLE_VALGRIND)
