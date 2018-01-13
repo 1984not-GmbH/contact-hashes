@@ -2,6 +2,8 @@ cmake_minimum_required (VERSION 2.6)
 
 project (contact-hashes C)
 
+include(GNUInstallDirs)
+
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/")
 
 enable_testing()
@@ -104,3 +106,6 @@ add_test(contact-hash-test "./contact-hash-test")
 if((NOT APPLE) AND (NOT ("${MEMORYCHECK_COMMAND}" MATCHES "MEMORYCHECK_COMMAND-NOTFOUND")) AND ENABLE_VALGRIND)
     add_test("contact-hash-test-valgrind" ${MEMORYCHECK_COMMAND} ${MEMORYCHECK_COMMAND_OPTIONS} "./contact-hash-test")
 endif()
+
+install(TARGETS contact-hashes DESTINATION "${CMAKE_INSTALL_LIBDIR}")
+install(TARGETS chash DESTINATION "${CMAKE_INSTALL_BINDIR}")
