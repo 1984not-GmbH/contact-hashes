@@ -50,10 +50,10 @@ int main(void) {
 		free(hash);
 	}
 
-	if (!compare_hash("argon2i13-3-1048576-27b0714c1fcb395efd9742f7800e90797fc916b44370d42e21f9523f8d96e647", "fsmaxb@1984not.de")) {
+	if (!compare_hash("argon2id13-2-4194304-127c38610ad65051c31f0be0e9241186dee7192f6e456ee9d5ef19a7393029a5", "fsmaxb@1984not.de")) {
 		return EXIT_FAILURE;
 	}
-	if (!compare_hash("argon2i13-3-1048576-61e6107159dee562f112fafee077d38f21bcf2a63084ff967a91d2e08eef1193", "+19995550123")) {
+	if (!compare_hash("argon2id13-2-4194304-eebd52b2b1d34a47816741e6b722e5d02ae7ed0d843c6722d521025b7f1f8d5c", "+19995550123")) {
 		return EXIT_FAILURE;
 	}
 
