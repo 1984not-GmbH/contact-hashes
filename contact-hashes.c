@@ -35,6 +35,10 @@ char *hash_contact(const char * const contact, const size_t contact_length) {
 
 	assert(sizeof(salt) == crypto_pwhash_argon2i_SALTBYTES);
 
+	if (sodium_init() < 0) {
+		return NULL;
+	}
+
 	unsigned char hash[hash_bytes];
 
 	/* calculate the hash */
